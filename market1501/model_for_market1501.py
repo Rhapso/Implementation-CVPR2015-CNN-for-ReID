@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#edited for local settings
 import numpy as np
 np.random.seed(1217)
 import h5py
@@ -262,7 +263,7 @@ class NumpyArrayIterator_for_Market1501(pre_image.Iterator):
             dim_ordering = K.image_dim_ordering()
         self.f = f
         self.path_list = path_list
-        self.folder_dir = '/home/' + user_name + '/dataset/market1501/boundingbox' + train_or_validation + '/'
+        self.folder_dir = '/home/' + user_name + '/src/Market1501/Market-1501-v15.09.15/bounding_box_' + train_or_validation + '/'
         self.train_or_validation = train_or_validation
         self.flag = flag
         self.image_data_generator = image_data_generator
@@ -330,8 +331,8 @@ def random_test(model, user_name = 'lpc', num = 10):
             path1 = f['test'][index,0]
             path2 = f['test'][index,1]
             print path1[0:7], path2[0:7]
-            A.append(np.array(Image.open('/home/' + user_name + '/dataset/market1501/boundingboxtest/' + path1)))
-            B.append(np.array(Image.open('/home/' + user_name + '/dataset/market1501/boundingboxtest/' + path2)))
+            A.append(np.array(Image.open('/home/' + user_name + '/src/Market1501/Market-1501-v15.09.15/bounding_box_test/' + path1)))
+            B.append(np.array(Image.open('/home/' + user_name + '/src/Market1501/Market-1501-v15.09.15/bounding_box_test/' + path2)))
             
         return np.array(A)/255.,np.array(B)/255.
     
@@ -387,7 +388,7 @@ def train(model,weights_name='weights_on_market1501_0_0',train_num=100,one_epoch
 
 if __name__ == '__main__':
     print 'default dim order is:',K.image_dim_ordering()
-    user_name = raw_input('please input your system user name:')
+    user_name = raw_input('input usr name: ')
     model = model_def()
     print 'model definition done.'
     model = compiler_def(model)

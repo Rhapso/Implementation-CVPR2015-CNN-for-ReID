@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+# edited for local settings
 import os
 import h5py
 import numpy as np
 from PIL import Image
 
-def make_positive_index_market1501(train_or_test = 'train',user_name = 'ubuntu'):
+def make_positive_index_market1501(train_or_test = 'train',user_name = 'fzp'):
     f = h5py.File('market1501_positive_index.h5')
     path_list = get_image_path_list(train_or_test = train_or_test, system_user_name = user_name)
     index = []
@@ -26,7 +27,7 @@ def make_positive_index_market1501(train_or_test = 'train',user_name = 'ubuntu')
     f.create_dataset(train_or_test,data = index)
 
 
-def make_test_hdf5(user_name='ubuntu'):
+def make_test_hdf5(user_name='fzp'):
     with h5py.File('test.h5') as f:
         path_list = get_image_path_list(train_or_test='test')
         i = path_list[0][0:4]
@@ -37,14 +38,14 @@ def make_test_hdf5(user_name='ubuntu'):
             print path
             if path[0:4] == i:
                 if path[6] == c:
-                    temp.append(np.array(Image.open('/home/' + user_name + '/dataset/market1501/boundingboxtest/' + path)))
+                    temp.append(np.array(Image.open('/home/' + user_name + '/src/Market1501/Market-1501-v15.09.15/bounding_box_test/' + path)))
                 else:
                     print len(temp)
                     fi.create_dataset(c,data = np.array(temp))
                     temp = []
                     c = path[6]
                     print c
-                    temp.append(np.array(Image.open('/home/' + user_name + '/dataset/market1501/boundingboxtest/' + path)))
+                    temp.append(np.array(Image.open('/home/' + user_name + '/src/Market1501/Market-1501-v15.09.15/bounding_box_test/' + path)))
             else:
                 fi.create_dataset(c,data = np.array(temp))
                 i = path[0:4]
@@ -53,24 +54,24 @@ def make_test_hdf5(user_name='ubuntu'):
                 c = path[6]
                 print c
                 temp = []
-                temp.append(np.array(Image.open('/home/' + user_name + '/dataset/market1501/boundingboxtest/' + path)))
+                temp.append(np.array(Image.open('/home/' + user_name + '/src/Market1501/Market-1501-v15.09.15/bounding_box_test/' + path)))
     
     
     
-def get_image_path_list(train_or_test = 'train',system_user_name = 'ubuntu'):
+def get_image_path_list(train_or_test = 'train',system_user_name = 'fzp'):
     if train_or_test == 'train':
-        folder_path = '/home/' + system_user_name + '/dataset/market1501/boundingboxtrain'
+        folder_path = '/home/' + system_user_name + '/src/Market1501/Market-1501-v15.09.15/bounding_box_train'
     elif train_or_test == 'test':
-        folder_path = '/home/' + system_user_name + '/dataset/market1501/boundingboxtest'
+        folder_path = '/home/' + system_user_name + '/src/Market1501/Market-1501-v15.09.15/bounding_box_test/'
     elif train_or_test == 'query':
-        folder_path = '/home/' + system_user_name + '/dataset/market1501/query'
+        folder_path = '/home/' + system_user_name + '/src/Market1501/Market-1501-v15.09.15/query'
     assert os.path.isdir(folder_path)
     if train_or_test == 'train' or train_or_test == 'query':
         return sorted(os.listdir(folder_path))
     elif train_or_test == 'test':
         return sorted(os.listdir(folder_path))[6617:]
 
-def get_data_for_cmc(user_name = 'ubuntu'):
+def get_data_for_cmc(user_name = 'fzp'):
     with h5py.File('test.h5','r') as f:
         A = []
         B = []
@@ -83,6 +84,6 @@ def get_data_for_cmc(user_name = 'ubuntu'):
         return np.array(A)/255.,np.array(B)/255.
 
 if __name__ == '__main__':
-    user_name = raw_input('input your system user name:')
+    user_name = raw_input('input ubuntu usrname: ')
     make_positive_index_market1501('train',user_name=user_name)
     make_positive_index_market1501('test',user_name=user_name)
